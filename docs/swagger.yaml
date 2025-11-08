@@ -1,0 +1,141 @@
+basePath: /
+definitions:
+  dto.TaskDTO:
+    properties:
+      I:
+        example: 5.5
+        type: number
+      TTL:
+        example: 120
+        type: number
+      d:
+        example: 11.5
+        type: number
+      "n":
+        example: 5
+        type: integer
+      n1:
+        example: 21.33
+        type: number
+    required:
+    - I
+    - TTL
+    - d
+    - "n"
+    - n1
+    type: object
+  models.TaskModel:
+    properties:
+      I:
+        example: 5.5
+        type: number
+      TTL:
+        example: 120
+        type: number
+      current_iteration:
+        example: 3
+        type: integer
+      current_value:
+        example: 21.33
+        type: number
+      d:
+        example: 11.5
+        type: number
+      "n":
+        example: 5
+        type: integer
+      n1:
+        example: 21.33
+        type: number
+      queue_index:
+        example: 0
+        type: integer
+      task_created_at:
+        example: "2022-01-01T00:00:00+00:00"
+        type: string
+      task_finished_at:
+        example: "2022-01-01T00:00:00+00:00"
+        type: string
+      task_id:
+        example: 1
+        type: integer
+      task_started_at:
+        example: "2022-01-01T00:00:00+00:00"
+        type: string
+      task_status:
+        allOf:
+        - $ref: '#/definitions/models.TaskStatus'
+        example: in_queue
+    type: object
+  models.TaskStatus:
+    enum:
+    - in queue
+    - in progress
+    - completed
+    type: string
+    x-enum-varnames:
+    - statusInQueue
+    - statusInProgress
+    - statusCompleted
+  response.Response:
+    properties:
+      detail:
+        example: response detail
+        type: string
+    type: object
+info:
+  contact: {}
+  description: PERX Queue API
+  title: PERX Queue API
+  version: 1.0.0
+paths:
+  /task/add:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TaskDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: success response
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: failure response
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: failure response
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Add task
+      tags:
+      - Task
+  /task/list:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success response
+          schema:
+            items:
+              $ref: '#/definitions/models.TaskModel'
+            type: array
+        "400":
+          description: failure response
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get task list
+      tags:
+      - Task
+swagger: "2.0"
