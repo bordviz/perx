@@ -40,7 +40,6 @@ func (q *Queue) AddTask(task *dto.TaskDTO) error {
 	const op = "queue.AddTask"
 	log := with.WithOp(q.log, op)
 
-	//TODO fix leak
 	q.mu.Lock()
 	defer q.mu.Unlock()
 
